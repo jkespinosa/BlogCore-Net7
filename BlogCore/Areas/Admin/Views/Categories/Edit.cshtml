@@ -1,0 +1,54 @@
+﻿@model BlogCore.Models.Category
+
+@{
+    ViewData["Title"] = "Editar categoria";
+}
+
+<br />
+<br />
+
+<h3 class="text-center"> Editar  categoria</h3>
+
+<form method="POST" asp-action="Edit">
+    <div class="row px-2 offset-1 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-10 offset-1 mt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="col-4">
+                        <label asp-for="Name"></label>
+                    </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Name" class="form-control" placeholder="Ingrese nombre de categoria" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="col-4">
+                        <label asp-for="OrderNumber"></label>
+                    </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="OrderNumber" class="form-control" placeholder="Ingrese el orden" />
+                    <span asp-validation-for="OrderNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col">
+                   <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Id">Actalizar</button>
+                </div>
+
+                <div>
+                    <a asp-action="Index" class="btn btn-success form-control"> Volver a la lista</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>

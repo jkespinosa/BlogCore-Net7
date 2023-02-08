@@ -1,0 +1,90 @@
+﻿@model BlogCore.Models.ViewModels.ArticlesVM
+
+@{
+    ViewData["Title"] = "Crear Articulos";
+}
+
+<br />
+<br />
+
+<h3 class="text-center"> Crear uan nueva categoria</h3>
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <div class="row px-2 offset-1 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-10 offset-1 mt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="col-4">
+                        <label asp-for="Article.Name"></label>
+                    </label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Article.Name" class="form-control" placeholder="Ingrese nombre de categoria" />
+                    <span asp-validation-for="Article.Name" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="col-4">
+                        <label asp-for="Article.Description"></label>
+                    </label>
+                </div>
+                <div class="col-8">
+                    <textarea asp-for="Article.Description" class="form-control" style="height:300px"></textarea>
+                    <span asp-validation-for="Article.Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-4">
+                    <label class="col-4">
+                        <label for="Category">Categoria</label>
+                    </label>
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(m=> m.Article.CategoryId, Model.CategoryList, "-Selecione una categoria-",
+                    new {@class="form-control"})
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label class="col-4">
+                        <label asp-for="Article.UrlImage"></label>
+                    </label>
+                </div>
+                <div class="col-8">
+                    <input type="file" name="files" id="loadfiles" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row mt-2">
+                <div class="col-8">
+                    <partial name="_ViewCreateBack" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts{
+    <script src="https://cdn.tiny.cloud/1/kz6ylez57qi0vb1j26xlp9my9kdcgrq47zqrja8plcm7ywhq/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ]
+        });
+    </script>
+}
