@@ -1,18 +1,19 @@
 ﻿@model BlogCore.Models.ViewModels.ArticlesVM
 
 @{
-    ViewData["Title"] = "Crear Articulos";
+    ViewData["Title"] = "Editar Articulos";
 }
 
 <br />
 <br />
 
-<h3 class="text-center"> Crear  nueva articulo</h3>
+<h3 class="text-center"> Crear nuevo articulo</h3>
 
 <form method="post" asp-action="Create" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Article.Id" />
     <div class="row px-2 offset-1 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-10 offset-1 mt-4">
+        <div class="col-8  mt-4">
             <div class="form-group row">
                 <div class="col-4">
                     <label class="col-4">
@@ -61,11 +62,20 @@
                 </div>
             </div>
 
-            <div class="form-group row mt-2">
-                <div class="col-8">
-                    <partial name="_ViewCreateBack" />
+           <div class="form-group row">
+                <div class="col">
+                   <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Article.Id">Actalizar</button>
                 </div>
+
+                <div class="col">
+                    <a asp-action="Index" class="btn btn-success form-control"> Volver a la lista</a>
+                </div>
+
             </div>
+        </div>
+
+        <div class="col-4 pt-3">
+            <img src="@Model.Article.UrlImage"  width="100%" style="border-radius:5px; border:1px solid #bbb9b9 "/>
         </div>
     </div>
 

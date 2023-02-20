@@ -33,6 +33,6 @@ namespace BlogCore.Models
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
+        public Category Categories { get; set; }
     }
 }

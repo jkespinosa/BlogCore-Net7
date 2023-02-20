@@ -18,11 +18,13 @@ namespace BlogCore.DataAccess.Data.Repository
             _db = db;
             Category = new CategoryReposotiry(_db);
             Articles = new ArticleReposotiry(_db);
+            Sliders = new SliderReposotiry(_db);
 
         }
 
         public ICategoryRepository Category { get; private set; }
         public IArticleRepository Articles { get; private set; }
+        public ISliderRepository Sliders { get; private set; }
 
 
         public void Save()

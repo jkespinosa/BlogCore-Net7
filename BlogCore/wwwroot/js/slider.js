@@ -5,27 +5,39 @@ $(document).ready(function () {
 });
 
 function loadDatatable() {
-    dataTable = $("#tblArticles").DataTable({
+    dataTable = $("#tblSliders").DataTable({
         "ajax": {
-            "url": "/Admin/Articles/GetAll",
+            "url": "/admin/sliders/GetAll",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
             { "data": "id", "width": "5%" },
             { "data": "name", "width": "25%" },
-            { "data": "categories.name", "width": "15%" },
-            { "data": "dateCreate", "width": "15%" },
-
+            /*EMPIEZA EDICION ESTADO*/
+            {
+                "data": "estado",
+                "render": function (estadoActual) {
+                    if (estadoActual == true) {
+                        return "Activo"
+                    } else {
+                        return "Inactivo"
+                    }
+                },
+                "width": "20%"
+            },
+            /*CIERRA EDICION ESTADO*/
             {
                 "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">
-                                <a href="/Admin/Articles/Edit/${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
-                                <i class="far fa-edit"></i>Editar</a>
+                                <a href="/Admin/Sliders/Edit/${data}" class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                <i class="far fa-edit"></i>Editar
+                                </a>
                                 &nbsp;
-                                <a onclick=Delete("/Admin/Articles/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
-                                <i class="far fa-trash-alt"></i>Borrar</a>
+                                <a onclick=Delete("/Admin/Sliders/Delete/${data}") class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
+                                <i class="far fa-trash-alt"></i>Borrar
+                                </a>
                             </div>
                             `;
                 }, "width": "30%"
@@ -53,9 +65,7 @@ function loadDatatable() {
         },
         "width": "100%"
     });
-};
-
-
+}
 
 function Delete(url) {
     swal({
@@ -82,6 +92,3 @@ function Delete(url) {
         });
     });
 }
-
-
-

@@ -1,27 +1,29 @@
-﻿@model BlogCore.Models.ViewModels.ArticlesVM
+﻿@model BlogCore.Models.Slider
 
 @{
-    ViewData["Title"] = "Crear Articulos";
+    ViewData["Title"] = "Crear Slider";
 }
 
 <br />
 <br />
 
-<h3 class="text-center"> Crear  nueva articulo</h3>
+<h3 class="text-center"> Editar Slider</h3>
 
-<form method="post" asp-action="Create" enctype="multipart/form-data">
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
     <div class="row px-2 offset-1 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-10 offset-1 mt-4">
+        <div class="col-8 mt-4">
             <div class="form-group row">
                 <div class="col-4">
                     <label class="col-4">
-                        <label asp-for="Article.Name"></label>
+                        <label asp-for="Name"></label>
                     </label>
                 </div>
                 <div class="col-8">
-                    <input asp-for="Article.Name" class="form-control" placeholder="Ingrese nombre de categoria" />
-                    <span asp-validation-for="Article.Name" class="text-danger"></span>
+                    <input asp-for="Name" class="form-control" placeholder="Ingrese nombre de categoria" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
 
@@ -29,49 +31,50 @@
             <div class="form-group row">
                 <div class="col-4">
                     <label class="col-4">
-                        <label asp-for="Article.Description"></label>
+                        <label asp-for="State"></label>
                     </label>
                 </div>
                 <div class="col-8">
-                    <textarea asp-for="Article.Description" class="form-control" style="height:300px"></textarea>
-                    <span asp-validation-for="Article.Description" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="form-group row mt-2">
-                <div class="col-4">
-                    <label class="col-4">
-                        <label for="Category">Categoria</label>
-                    </label>
-                </div>
-                <div class="col-8">
-                    @Html.DropDownListFor(m=> m.Article.CategoryId, Model.CategoryList, "-Selecione una categoria-",
-                    new {@class="form-control"})
+                    <input asp-for="State" />
+                    <span asp-validation-for="State" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-4">
                     <label class="col-4">
-                        <label asp-for="Article.UrlImage"></label>
+                        <label asp-for="UrlImage"></label>
                     </label>
                 </div>
                 <div class="col-8">
                     <input type="file" name="files" id="loadfiles" class="form-control" />
+                    <span asp-validation-for="UrlImage" class="text-danger"></span>
+
                 </div>
             </div>
 
-            <div class="form-group row mt-2">
-                <div class="col-8">
-                    <partial name="_ViewCreateBack" />
+            <div class="form-group row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary form-control" asp-route-id="@Model.Id">Actalizar</button>
                 </div>
+
+                <div class="col">
+                    <a asp-action="Index" class="btn btn-success form-control"> Volver a la lista</a>
+                </div>
+
             </div>
+        </div>
+        <div class="col-4 pt-3">
+            <img src="@Model.UrlImage" width="100%" style="border-radius:5px; border:1px solid #bbb9b9 " />
         </div>
     </div>
 
 </form>
 
 @section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="https://cdn.tiny.cloud/1/kz6ylez57qi0vb1j26xlp9my9kdcgrq47zqrja8plcm7ywhq/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     <script>

@@ -10,12 +10,12 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 namespace BlogCore.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ArticlesController : Controller
+    public class SlidersController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ArticlesController(IUnitOfWork unitOfWork, IWebHostEnvironment hostingEnvironment)
+        public SlidersController(IUnitOfWork unitOfWork, IWebHostEnvironment hostingEnvironment)
         {
             _unitOfWork = unitOfWork;
             _hostingEnvironment = hostingEnvironment;
@@ -29,45 +29,37 @@ namespace BlogCore.Areas.Admin.Controllers
 
         [HttpGet]
         public IActionResult Create()
-        {
-            ArticlesVM artvm = new ArticlesVM()
-            {
-                Article = new BlogCore.Models.Article(),
-                CategoryList = _unitOfWork.Category.GetListAllCategories()
-            };
+        {         
 
-            return View(artvm);
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ArticlesVM model)
+        public IActionResult Create(Slider model)
         {
             if (ModelState.IsValid)
             {
                 string pathPrincipal = _hostingEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
-                if (model.Article.Id == 0)
-                {
+               
                     string nameFile = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(pathPrincipal, @"images\articles");
+                    var uploads = Path.Combine(pathPrincipal, @"images\sliders");
                     var extention = Path.GetExtension(files[0].FileName);
 
                     using (var fileStreams = new FileStream(Path.Combine(uploads, nameFile + extention), FileMode.Create))
                     {
                         files[0].CopyTo(fileStreams);
                     }
-                    model.Article.UrlImage = @"\images\articles\" + nameFile + extention;
-                    model.Article.DateCreate = DateTime.Now.ToString();
+                model.UrlImage = @"\images\sliders\" + nameFile + extention;
 
-                    _unitOfWork.Articles.Add(model.Article);
+                    _unitOfWork.Sliders.Add(model);
                     _unitOfWork.Save();
 
                     return RedirectToAction("Index");
-                }
+                
             }
 
-            model.CategoryList = _unitOfWork.Category.GetListAllCategories();
             return View(model);
 
         }
@@ -75,41 +67,38 @@ namespace BlogCore.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            ArticlesVM artvm = new ArticlesVM()
-            {
-                Article = new BlogCore.Models.Article(),
-                CategoryList = _unitOfWork.Category.GetListAllCategories()
-            };
-
+           
             if (id != null)
             {
-                artvm.Article = _unitOfWork.Articles.Get(id.GetValueOrDefault());
+                var slider = _unitOfWork.Sliders.Get(id.GetValueOrDefault());
+                return View(slider);
+
             }
 
-            return View(artvm);
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(ArticlesVM model)
+        public IActionResult Edit(Slider model)
         {
             if (ModelState.IsValid)
             {
                 string pathPrincipal = _hostingEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
 
-                var articleFromDB = _unitOfWork.Articles.Get(model.Article.Id);
+                var sliderFromDB = _unitOfWork.Sliders.Get(model.Id);
 
 
 
                 if (files.Count() > 0)
                 {
                     string nameFile = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(pathPrincipal, @"images\articles");
+                    var uploads = Path.Combine(pathPrincipal, @"images\sliders");
                     var extention = Path.GetExtension(files[0].FileName);
                     var NewExtension = Path.GetExtension(files[0].FileName);
 
-                    var pathImagen = Path.Combine(pathPrincipal, articleFromDB.UrlImage.TrimStart('\\'));
+                    var pathImagen = Path.Combine(pathPrincipal, sliderFromDB.UrlImage.TrimStart('\\'));
 
                     if (System.IO.File.Exists(pathImagen))
                     {
@@ -121,29 +110,27 @@ namespace BlogCore.Areas.Admin.Controllers
                         files[0].CopyTo(fileStreams);
                     }
 
-                    model.Article.UrlImage = @"\images\articles\" + nameFile + extention;
-                    model.Article.DateCreate = DateTime.Now.ToString();
+                    model.UrlImage = @"\images\sliders\" + nameFile + extention;
 
-                    _unitOfWork.Articles.Update(model.Article);
+                    _unitOfWork.Sliders.Update(model);
                     _unitOfWork.Save();
 
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    model.Article.UrlImage = articleFromDB.UrlImage;
+                    model.UrlImage = sliderFromDB.UrlImage;
 
 
                 }
 
-                _unitOfWork.Articles.Update(model.Article);
+                _unitOfWork.Sliders.Update(model);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
 
             }
 
-            model.CategoryList = _unitOfWork.Category.GetListAllCategories();
-            return View(model);
+            return View();
 
         }
 
@@ -151,27 +138,21 @@ namespace BlogCore.Areas.Admin.Controllers
         public IActionResult Delete(int id)
         {
 
-            var articleFromDB = _unitOfWork.Articles.Get(id);
-            string pathPrincipal = _hostingEnvironment.WebRootPath;
-            var pathImagen = Path.Combine(pathPrincipal, articleFromDB.UrlImage.TrimStart('\\'));
+            var sliderFromDB = _unitOfWork.Sliders.Get(id);
+      
 
-            if (System.IO.File.Exists(pathImagen))
+        
+
+            if (sliderFromDB == null)
             {
-                System.IO.File.Delete(pathImagen);
-            }
-
-            var objFromDb = _unitOfWork.Articles.Get(id);
-
-            if (objFromDb == null)
-            {
-                return Json(new { success = false, message = "Error borrando articulo" });
+                return Json(new { success = false, message = "Error borrando slider" });
             }
 
         
 
-            _unitOfWork.Articles.Remove(objFromDb);
+            _unitOfWork.Sliders.Remove(sliderFromDB);
             _unitOfWork.Save();
-            return Json(new { success = true, message = "articulo borrada correctamente" });
+            return Json(new { success = true, message = "slider borrado correctamente" });
 
         }
 
@@ -182,7 +163,7 @@ namespace BlogCore.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             //Opcion 1
-            return Json(new { data = _unitOfWork.Articles.GetAll(includeProperties: "Categories") });
+            return Json(new { data = _unitOfWork.Sliders.GetAll() });
         }
 
 
