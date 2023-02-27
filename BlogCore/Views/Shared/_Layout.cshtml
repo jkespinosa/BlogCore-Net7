@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BlogCore.styles.css" asp-append-version="true" />
-    
+
     <!--Plugins-->
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
@@ -27,7 +27,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
-                        
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Contenidos</a>
                             <div class="dropdown-menu">
@@ -39,14 +39,18 @@
                             </div>
                         </li>
                     </ul>
-                 
+
                 </div>
                 <partial name="_LoginPartial" />
 
             </div>
         </nav>
+        @if (ViewBag.IsHome == true)
+        {
+            <partial name="_Slider" />
+        }
 
-    
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">

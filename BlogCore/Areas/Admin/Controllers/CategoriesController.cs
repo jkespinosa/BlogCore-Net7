@@ -10,12 +10,10 @@ namespace BlogCore.Areas.Admin.Controllers
     public class CategoriesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ApplicationDbContext _context;
 
-        public CategoriesController(IUnitOfWork unitOfWork, ApplicationDbContext context)
+        public CategoriesController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _context = context;
         }
 
         [HttpGet]

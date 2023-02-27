@@ -1,4 +1,6 @@
-﻿using BlogCore.Models;
+﻿using BlogCore.DataAccess.Data.Repository.IRepository;
+using BlogCore.Models;
+using BlogCore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,22 +9,35 @@ namespace BlogCore.Areas.Client.Controllers
     [Area("Client")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            _logger = logger;
+            _unitOfWork = unitOfWork;
+
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomeVM homevm = new HomeVM()
+            {
+                Slider = _unitOfWork.Sliders.GetAll(),
+                ArticlesList= _unitOfWork.Articles.GetAll()
+
+            };
+
+            ViewBag.IsHome = true;
+
+            return View(homevm);
         }
 
-        public IActionResult Privacy()
+        public IActionResult Details(int id)
         {
-            return View();
+            var articleFromDb = _unitOfWork.Articles.Get(id);
+            return View(articleFromDb);
+
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

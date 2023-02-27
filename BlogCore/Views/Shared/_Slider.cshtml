@@ -1,0 +1,31 @@
+﻿@model BlogCore.Models.ViewModels.HomeVM
+
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+
+        @{
+            int count = 0;
+
+            @foreach (var item in Model.Slider.Where(s => s.State == true))
+            {
+                var itemDinamic = count++ == 0 ? "item active" : "item";
+
+
+                <div class="carousel-item @itemDinamic">
+                    <img src="@Url.Content(item.UrlImage)" class="d-block w-100 h-50">
+                    <h2 class="text-white text-center bg-dark py-1">@Html.Raw(item.Name)</h2>
+                </div>
+
+            }
+        }
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
