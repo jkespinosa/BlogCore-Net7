@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using BlogCore.Models;
+using BlogCore.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +28,9 @@ namespace BlogCore.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUSer> _signInManager;
         private readonly UserManager<ApplicationUSer> _userManager;
         private readonly IUserStore<ApplicationUSer> _userStore;
-        private readonly IUserEmailStore<ApplicationUSer> _emailStore;
+        private readonly IUserEmailStore<IdentityRole> _emailStore;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
@@ -35,7 +38,8 @@ namespace BlogCore.Areas.Identity.Pages.Account
             UserManager<ApplicationUSer> userManager,
             IUserStore<ApplicationUSer> userStore,
             SignInManager<ApplicationUSer> signInManager,
-            ILogger<RegisterModel> logger
+            ILogger<RegisterModel> logger,
+            RoleManager<IdentityRole> roleManager
             /*IEmailSender emailSender*/)
         {
             _userManager = userManager;
@@ -43,6 +47,7 @@ namespace BlogCore.Areas.Identity.Pages.Account
             //_emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _roleManager = roleManager;
             //_emailSender = emailSender;
         }
 
@@ -138,6 +143,31 @@ namespace BlogCore.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+
+                    if (!await _roleManager.RoleExistsAsync(CNT.Admin))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(CNT.Admin));
+                        await _roleManager.CreateAsync(new IdentityRole(CNT.User));
+                    }
+
+                    string rol = Request.Form["radioUserRole"].ToString();
+
+                    if (rol == CNT.Admin)
+                    {
+                        await _userManager.AddToRoleAsync(user, CNT.Admin);
+                    }
+                    else {
+
+                        if (rol == CNT.User)
+                        {
+                            await _userManager.AddToRoleAsync(user, CNT.User);
+                        }
+                        else {
+                            await _userManager.AddToRoleAsync(user, CNT.User);
+
+                        }
+                    }
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
