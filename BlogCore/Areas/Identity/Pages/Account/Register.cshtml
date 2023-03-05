@@ -45,6 +45,12 @@
             </div>
 
             <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="PhoneNumber" aria-required="true" />
+                <label asp-for="Input.PhoneNumber"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
                 <label asp-for="Input.Password"></label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
@@ -55,18 +61,20 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
 
-            @*            Selector de roles
-            *@
-            <div class="form-group row">
-                <div class="col-6"><h4>Seleccionar rol de usaurio</h4></div>
-                <div class="col-5">
-                    <input type="radio" name="radioUserRole" value="@CNT.Admin" />@CNT.Admin
-                    <input type="radio" name="radioUserRole" value="@CNT.User" />@CNT.User
+
+            @if (User.IsInRole(CNT.Admin))
+            {
+
+                <div class="form-group row">
+                    <div class="col-6"><h4>Seleccionar rol de usaurio</h4></div>
+                    <div class="col-5">
+                        <input type="radio" name="radioUserRole" value="@CNT.Admin" />@CNT.Admin
+                        <input type="radio" name="radioUserRole" value="@CNT.User" />@CNT.User
+
+                    </div>
 
                 </div>
-
-            </div>
-
+            }
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registro</button>
         </form>
     </div>

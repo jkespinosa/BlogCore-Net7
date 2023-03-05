@@ -2,10 +2,12 @@
 using BlogCore.DataAccess.Data.Repository;
 using BlogCore.DataAccess.Data.Repository.IRepository;
 using BlogCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogCore.Areas.Admin.Controllers
 {
+    [Authorize(Roles ="Admin")]
     [Area("Admin")]
     public class CategoriesController : Controller
     {
@@ -22,6 +24,7 @@ namespace BlogCore.Areas.Admin.Controllers
             return View();
         }
 
+        //[AllowAnonymous]
         [HttpGet]
         public IActionResult Create()
         {

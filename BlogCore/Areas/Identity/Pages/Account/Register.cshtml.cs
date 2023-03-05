@@ -115,7 +115,13 @@ namespace BlogCore.Areas.Identity.Pages.Account
 
             [Required(ErrorMessage = "La ciudad es obligatorio")]
             public string Country { get; set; }
+
+            [Display(Name = "Telefono")]
+
+            [Required(ErrorMessage = "El telefono es obligatorio")]
+            public string PhoneNumber { get; set; }
         }
+    
 
 
         public async Task OnGetAsync(string returnUrl = null)

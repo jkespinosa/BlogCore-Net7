@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using BlogCore.Utilities;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,16 +30,21 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><spam class="text-white">Contenidos</spam></a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Categories" asp-action="Index">Categorías</a>
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Articles" asp-action="Index">Articúlos</a>
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Sliders" asp-action="Index">Slider</a>
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuarios</a>
+                        @if (User.IsInRole(CNT.Admin))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><spam class="text-white">Contenidos</spam></a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Categories" asp-action="Index">Categorías</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Articles" asp-action="Index">Articúlos</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Sliders" asp-action="Index">Slider</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">Usuarios</a>
 
-                            </div>
-                        </li>
+                                </div>
+                            </li>
+                            
+                        }
+
                     </ul>
 
                 </div>
